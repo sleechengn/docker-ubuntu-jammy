@@ -17,6 +17,7 @@ run mkdir /opt/filebrowser
 run rm -rf /etc/nginx/sites-enabled/default
 add ./NGINX /etc/nginx/sites-enabled/
 
+env ROOT_PASSWORD=
 copy ./docker-entrypoint.sh /
 run chmod +x /docker-entrypoint.sh
 cmd []
