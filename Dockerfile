@@ -1,5 +1,5 @@
 from ubuntu:jammy
-
+#APT_UBUNTU_JAMMY
 run apt update \
 	&& apt -y install openssh-server nano unzip wget curl psmisc net-tools \
 	&& sed -i 's/.*PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config \
