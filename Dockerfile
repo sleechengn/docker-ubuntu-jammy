@@ -14,6 +14,13 @@ run apt install -y nginx ttyd
 run curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
 run mkdir /opt/filebrowser
 
+run set -e \
+        && apt install -y language-pack-zh-hans \
+        && locale-gen zh_CN.UTF-8 \
+        && update-locale LANG=zh_CN.UTF-8 \
+	&& apt install -y aria2 \
+        && apt clean
+
 run rm -rf /etc/nginx/sites-enabled/default
 add ./NGINX /etc/nginx/sites-enabled/
 
