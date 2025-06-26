@@ -35,4 +35,5 @@ copy ./docker-entrypoint.sh /
 run chmod +x /docker-entrypoint.sh
 cmd []
 volume ["/opt/installer"]
+volume ["/workspace"]
 entrypoint ["/docker-entrypoint.sh"]
