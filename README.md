@@ -14,16 +14,18 @@ networks:
     name: lan13
     driver: macvlan
     driver_opts:
-      parent: eth1
+      parent: lan2
     ipam:
       config:
         - subnet: "192.168.13.0/24"
           gateway: "192.168.13.1"
 services:
-  ubuntu:
-    container_name: "ubuntu"
-    hostname: "ubuntu"
-    image: "sleechengn/ubuntu:jammy"
+  ubuntu-jammy:
+    container_name: "ubuntu-jammy"
+    hostname: "ubuntu-jammy"
+    build:
+      context: https://github.com/sleechengn/docker-ubuntu-jammy
+      dockerfile: Dockerfile
     restart: unless-stopped
     environment:
       - ROOT_PASSWORD=123456
