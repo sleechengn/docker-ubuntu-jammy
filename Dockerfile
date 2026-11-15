@@ -1,10 +1,11 @@
-from ubuntu:jammy
+arg VERSION=jammy
+from ubuntu:$VERSION
 
-#APT_UBUNTU_JAMMY
+#APT_UBUNTU
 run apt update \
 	&& apt -y install openssh-server nano unzip wget curl psmisc net-tools aria2 nginx lrzsz \
 	&& sed -i 's/.*PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config \
-	&& mkdir /run/sshd \
+	&& mkdir -p /run/sshd \
 	&& chmod -R 700 /run/sshd \
 	&& chown -R root:users /run/sshd \
 	&& echo "root:root" | chpasswd \
@@ -17,7 +18,7 @@ copy ./installer /opt/installer
 run set -e \
         && mkdir /opt/trzsz && cd /opt/trzsz \
         && DOWNLOAD=$(curl -s https://api.github.com/repos/trzsz/trzsz-go/releases/latest | grep browser_download_url |grep linux_x86_64|grep tar| cut -d'"' -f4) \
-        && aria2c -x 10 -j 10 -k 1m $DOWNLOAD -o bin.tar.gz \
+        && aria2c -x 10 -j 10 -k 1m ${DOWNLOAD:-https://github.com/trzsz/trzsz-go/releases/download/v1.2.0/trzsz_1.2.0_linux_x86_64.tar.gz} -o bin.tar.gz \
         && tar -zxvf bin.tar.gz \
         && rm -rf bin.tar.gz \
         && BIN_DIR=$(pwd)/$(ls -A .) \
@@ -28,14 +29,14 @@ run set -e \
 #ttyd
 run set -e \
        && DOWNLOAD=$(curl -s https://api.github.com/repos/tsl0922/ttyd/releases/latest | grep browser_download_url |grep ttyd.x86_64| cut -d'"' -f4) \
-       && aria2c -x 10 -j 10 -k 1m $DOWNLOAD -o /usr/bin/ttyd.x86_64 \
+       && aria2c -x 10 -j 10 -k 1m ${DOWNLOAD:-https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.x86_64} -o /usr/bin/ttyd.x86_64 \
        && chmod +x /usr/bin/ttyd.x86_64
 
 # filebrowser                                                                                                                                                                                                                                                                
 run mkdir /opt/filebrowser \                                                                                                                                                                                                                                                 
         && cd /opt/filebrowser\                                                                                                                                                                                                                                              
         && DOWNLOAD=$(curl -s https://api.github.com/repos/filebrowser/filebrowser/releases/latest | grep browser_download_url |grep linux|grep amd64| grep -v rocm| cut -d'"' -f4) \                                                                                        
-        && aria2c -x 10 -j 10 -k 1M $DOWNLOAD -o linux-amd64-filebrowser.tar.gz \                                                                                                                                                                                            
+        && aria2c -x 10 -j 10 -k 1M ${DOWNLOAD:-https://github.com/filebrowser/filebrowser/releases/download/v2.63.23/linux-amd64-filebrowser.tar.gz} -o linux-amd64-filebrowser.tar.gz \                                                                                                                                                                                            
         && tar -zxvf linux-amd64-filebrowser.tar.gz \                                                                                                                                                                                                                        
         && rm -rf linux-amd64-filebrowser.tar.gz \                                                                                                                                                                                                                           
         && ln -s $(pwd)/filebrowser /usr/bin/filebrowser
