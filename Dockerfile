@@ -3,7 +3,7 @@ from ubuntu:$VERSION
 
 #APT_UBUNTU
 run apt update \
-	&& apt -y install openssh-server nano unzip wget curl psmisc net-tools aria2 nginx lrzsz \
+	&& apt -y install openssh-server nano unzip wget curl psmisc net-tools aria2 nginx lrzsz fish \
 	&& sed -i 's/.*PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config \
 	&& mkdir -p /run/sshd \
 	&& chmod -R 700 /run/sshd \
